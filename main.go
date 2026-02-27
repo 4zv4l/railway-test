@@ -1,9 +1,32 @@
 package main
 
 import (
-	"fmt"
+	"net"
+	"bufio"
 )
 
+func handle(client net.Conn) {
+	defer client.Close()
+	r := bufio.NewReader(client)
+	w := bufio.NewWriter(client)
+
+	for {
+		line, err := r.ReadString('\n')
+		if err != nil {
+			return
+		}
+		w.WriteString(line)
+		w.Flush()
+	}
+}
+
 func main() {
-	fmt.Println("hello, world !")
+	server, err := net.Listen("tcp", "railway-test-production-bc31.up.railway.app:8080")
+	if err != nil {panic(err)}
+	for {
+		client, err := server.Accept()
+		if err != nil {panic(err)}
+		go handle(client)
+
+	}
 }
