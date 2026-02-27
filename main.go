@@ -21,7 +21,7 @@ func handle(client net.Conn) {
 }
 
 func main() {
-	server, err := net.Listen("tcp", "railway-test-production-bc31.up.railway.app:8080")
+	server, err := net.Listen("tcp", "0.0.0.0:8080")
 	if err != nil {panic(err)}
 	for {
 		client, err := server.Accept()
